@@ -1,3 +1,7 @@
+<script lang="ts">
+    let message: string = "Blank Svelte Native App"
+</script>
+
 <page>
     <actionBar title="Home" />
     <gridLayout>
@@ -6,13 +10,13 @@
                 <span class="fas" text="&#xf135;" />
                 <span text=" {message}" />
             </formattedString>
+            <formattedString>
+                <p>Hello world</p>
+            </formattedString>
         </label>
     </gridLayout>
 </page>
 
-<script lang="ts">
-    let message: string = "Blank Svelte Native App"
-</script>
 
 <style>
     .info .fas {

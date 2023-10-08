@@ -1,9 +1,11 @@
 <script lang="ts">
+    let loadingProcess = false;
     type ToSelect = "tvn" | "tvp" | "polsat";
     const selected: { select?: ToSelect, selectNew: (to: ToSelect) => any, getNewsUrl(): string, getNewsTitle(): string, getNewsTitle(): string } = {
         selectNew(toSelect) {
             return (ev: any) => {
-                selected.select = toSelect
+                selected.select = toSelect;
+                loadStart();
             }
         },
         getNewsUrl() {
@@ -31,6 +33,12 @@
             }
         }
     }
+    function loadStart() {
+        loadingProcess = true;
+        setTimeout(() => {
+            loadingProcess = false;
+        }, 2_000);
+    }
 </script>
 
 <page class="main">
@@ -55,7 +63,19 @@
             </stackLayout>
         </flexboxLayout>
     {:else}
-        <webView src="{selected.getNewsUrl()}"/>
+        {#if !loadingProcess}
+            <webView src="{selected.getNewsUrl()}"/>
+        {:else}
+            <flexboxLayout flexDirection="column" justifyContent="center" alignItems="center">
+                <label>
+                    <formattedString class="fr-s">
+                        <span>Loading </span>
+                        <span color="white">{selected.getNewsTitle() + " "}</span>
+                        <span>  content...</span>
+                    </formattedString>
+                </label>
+            </flexboxLayout>
+        {/if}
     {/if}
 </page>
 
@@ -112,5 +132,9 @@
         color: white;
         font-size: 16px;
         font-weight: 600;
+    }
+
+    .fr-s {
+        font-size: 20px;
     }
 </style>

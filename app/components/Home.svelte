@@ -1,6 +1,4 @@
 <script lang="ts">
-    let message = "Hello world"
-
     type ToSelect = "tvn" | "tvp" | "polsat";
     const selected: { select?: ToSelect, selectNew: (to: ToSelect) => any, getNewsUrl(): string, getNewsTitle(): string, getNewsTitle(): string } = {
         selectNew(toSelect) {
@@ -36,7 +34,11 @@
 </script>
 
 <page class="main">
-    <actionBar title="{selected ? selected.getNewsTitle() : ""}"/>
+    <actionBar title="{selected ? selected.getNewsTitle() : ""}" class:tvn={selected.select == "tvn"} class:tvp={selected.select == "tvp"} class:polsat={selected.select == "polsat"}>
+        {#if selected.select}
+            <navigationButton text="Go back" android.systemIcon="ic_menu_revert" on:tap={_ => selected.select = undefined}/>
+        {/if}
+    </actionBar>
     {#if !selected.select}
         <flexboxLayout class="layout" flexDirection="column" justifyContent="center" alignItems="center">
             <stackLayout class="btn-img" data-polsat orientation="horizontal" padding="5" on:tap={selected.selectNew("polsat")} >]
@@ -80,6 +82,21 @@
 
     [data-tvn] {
         background-color: white;
+    }
+
+    actionBar.tvn {
+        background-color: rgb(38, 38, 178);
+        color: white;
+    }
+    
+    actionBar.tvp {
+        background-color: rgb(131, 26, 26);
+        color: white;
+    }
+
+    actionBar.polsat {
+        background-color: white;
+        color: black;
     }
 
     .img {
